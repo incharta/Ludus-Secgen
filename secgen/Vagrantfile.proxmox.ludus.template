@@ -1,0 +1,32 @@
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # Plugin precisa sempre disto
+  config.vm.box = "dummy"
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  # SSH do template Ludus (debian:debian)
+  config.ssh.username = "debian"
+  config.ssh.password = "debian"
+  config.ssh.insert_key = false
+  config.ssh.verify_host_key = false
+
+  config.vm.provider :proxmox do |proxmox|
+    proxmox.endpoint        = "IP:8006/api2/json"
+    proxmox.verify_ssl      = false
+    proxmox.user_name       = "john-doe@pam"
+    proxmox.password        = "****************"
+    proxmox.pool            = "JD"
+    proxmox.selected_node   = "pve"
+
+    proxmox.vm_id_range     = 9000..9100
+    proxmox.vm_name_prefix  = "secgen-"
+
+    proxmox.vm_type         = :qemu
+    proxmox.qemu_template   = "debian-12-x64-server-template"
+    proxmox.qemu_os         = :l26
+    proxmox.qemu_disk_size  = "100G"
+
+    proxmox.disable_adjust_forwarded_port = true
+  end
+end
