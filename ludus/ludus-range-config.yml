@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://docs.ludus.cloud/schemas/range-config.json
+ludus:
+  - vm_name: "{{ range_id }}-debian12"
+    hostname: "{{ range_id }}-debian12"
+    template: secgen-vuln
+    full_clone: true
+    vlan: 10
+    ip_last_octet: 11
+    ram_gb: 4
+    cpus: 2
+    linux: true
+    testing:
+      snapshot: false
+      block_internet: false
+
+network:
+  external_default: ACCEPT
+  inter_vlan_default: REJECT
+  rules: []
